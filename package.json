@@ -1,0 +1,23 @@
+{
+  "name": "salvator",
+  "version": "0.1.0",
+  "description": "The Saviour, When You Forget Birthdays",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thealphadollar/salvator.git"
+  },
+  "keywords": [
+    "messenger",
+    "birthday"
+  ],
+  "author": "github@thealphadollar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thealphadollar/salvator/issues"
+  },
+  "homepage": "https://github.com/thealphadollar/salvator#readme"
+}
