@@ -1,4 +1,5 @@
 const pup = require('puppeteer');
+const resolve = require('./resolve_raw_data');
 
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').load(); // load environment variables from .env file
@@ -15,11 +16,33 @@ async function login(page) {
         console.log('login url opened\nfilling entries...');
         await page.type('#email', email);
         await page.type('#pass', pass);
+        await page.waitFor(1000);
         console.log('entries filled\nlogging in...');
         await page.click('#loginbutton');
         return true;
     } catch (error) {
         console.log('LOGIN FAILED!');
+        throw new Error(error);
+    }
+}
+
+async function getRawBirthdayData(page) {
+    try {
+        await page.goto(BIRTHDAY_URL);
+        console.log('birthday page opened\nscraping birthdays...');
+
+        const results = await page.evaluate(() => {
+            let raw_links = document.querySelector('#birthdays_content > div._4-u2._tzh._fbBirthdays__todayCard._4-u8 > div:nth-child(2)').innerHTML;
+            let raw_names = document.querySelector('#birthdays_content > div._4-u2._tzh._fbBirthdays__todayCard._4-u8 > div:nth-child(2)').innerText;
+
+            return {
+                raw_links,
+                raw_names
+            };
+        });
+        return results;
+    } catch (error) {
+        console.log('FAILED!');
         throw new Error(error);
     }
 }
@@ -30,13 +53,17 @@ async function openFB() {
         args: ['--no-sandbox']
     });
     const page = await browser.newPage();
+
     console.log('trying to login...');
-    login(page).then(success => {
-       if (success){
-           console.log('successfully logged in');
-       }
-    });
+    await login(page);
+    console.log('successfully logged in');
     await page.waitFor(10000);
+
+    console.log('getting birthdays...');
+    let birthday_links = await getRawBirthdayData(page);
+    console.log('links received');
+    await page.waitFor(10000);
+
 
 
     await browser.close();
