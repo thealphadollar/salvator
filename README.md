@@ -25,6 +25,9 @@ Salvator can be installed using npm or source.
 3. [Install npm](https://www.npmjs.com/get-npm)
 4. `npm install` (this step installs all the dependencies)
 
+**NOTE: In case of any errors related to launching headless chrome, [install google-chrome-stable](https://www.linuxbabe.com/ubuntu/install-google-chrome-ubuntu-16-04-lts).
+ It'll resolve all the dependency issues.**
+
 ## Using Salvator
 The following environment variables must be set to avail full functionality of the client:
 ```$xslt
