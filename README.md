@@ -53,4 +53,4 @@ For example, the below cronjob launches the script everyday at 00:05 (local syst
 5 0 * * * nodejs /path/to/salvator/index.js >> ~/cron.log
 ``` 
 ## Contributing
-Contributions are welcome, please look [here](www.github.com/thealphadollar/salvator/issues) for issues to work on.
+Contributions are welcome, please look in the issues tab to contribute.
