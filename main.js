@@ -47,6 +47,26 @@ async function getRawBirthdayData(page) {
     }
 }
 
+async function sendMessage(page, link, message){
+    await page.goto(link);
+    await page.keyboard.type(message);
+    await page.keyboard.press('Enter');
+}
+
+async function initMessages(browser, messageLinks, firstNames=undefined) {
+    for(let i=0; i<messageLinks.length; i++){
+        let message = undefined;
+        if (firstNames){
+            message = 'Hey ' + firstNames[i] + '! Happy Birthday :D';
+        }
+        else {
+            message = 'Hey! Happy Birthday :D';
+        }
+        const page = await browser.newPage();
+        sendMessage(page, messageLinks[i], message);
+    }
+}
+
 async function openFB() {
     const browser = await pup.launch({
         headless: false,
@@ -61,13 +81,26 @@ async function openFB() {
 
     console.log('getting birthdays...');
     const birthday_data = await getRawBirthdayData(page);
+    page.close();
     console.log('links received');
 
     console.log('extracting details from received raw data...');
-    const fb_links = resolve.resolveLinks(birthday_data.raw_links);
-    const names = resolve.resolveNames(birthday_data.raw_names);
+    const links = await resolve.resolveLinks(birthday_data.raw_links);
+    const names = await resolve.resolveNames(birthday_data.raw_names);
+    // console.log(links.messageLinks);
+    console.log('data fetched');
+
+    if (links.messageLinks.length === names.firstNames.length){
+        console.log('sending messages with names');
+        await initMessages(browser, links.messageLinks, names.firstNames);
+    }
+    else{
+        console.log('sending messages without name, length mismatch!');
+        await initMessages(browser, links.messageLinks);
+    }
 
     await page.waitFor(10000);
+    console.log('messages sent...\nThanks :D');
     await browser.close();
 }
 
