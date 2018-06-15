@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/thealphadollar/salvator#readme",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
     "dotenv": "^6.0.0",
     "puppeteer": "^1.5.0"
   }

@@ -60,13 +60,15 @@ async function openFB() {
     await page.waitFor(10000);
 
     console.log('getting birthdays...');
-    let birthday_links = await getRawBirthdayData(page);
+    const birthday_data = await getRawBirthdayData(page);
     console.log('links received');
+
+    console.log('extracting details from received raw data...');
+    const fb_links = resolve.resolveLinks(birthday_data.raw_links);
+    const names = resolve.resolveNames(birthday_data.raw_names);
+
     await page.waitFor(10000);
-
-
-
     await browser.close();
 }
 
-module.exports = {email, pass, openFB};
+module.exports = {openFB};
