@@ -1,5 +1,6 @@
 const pup = require('puppeteer');
-const resolve = require('./resolve_raw_data');
+const resolveData = require('./resolve_raw_data');
+const email = require('./email_notification');
 
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').load(); // load environment variables from .env file
@@ -7,15 +8,15 @@ if (process.env.NODE_ENV !== 'production') {
 
 const LOGIN_URL = 'https://www.fb.com/login';
 const BIRTHDAY_URL =  'https://www.facebook.com/events/birthdays/';
-const email = process.env.EMAIL;
-const pass = process.env.PASS;
+const fbID = process.env.FB_ID;
+const fbPass = process.env.FB_PASS;
 
 async function login(page) {
     try {
         await page.goto(LOGIN_URL);
-        console.log('login url opened\nfilling entries...');
-        await page.type('#email', email);
-        await page.type('#pass', pass);
+        console.log('login url opened\nfilling entries...\nid: '+fbID+'\npass: '+fbPass);
+        await page.type('#email', fbID);
+        await page.type('#pass', fbPass);
         await page.waitFor(1000);
         console.log('entries filled\nlogging in...');
         await page.click('#loginbutton');
@@ -85,22 +86,24 @@ async function openFB() {
     console.log('links received');
 
     console.log('extracting details from received raw data...');
-    const links = await resolve.resolveLinks(birthday_data.raw_links);
-    const names = await resolve.resolveNames(birthday_data.raw_names);
+    const links = await resolveData.resolveLinks(birthday_data.raw_links);
+    const names = await resolveData.resolveNames(birthday_data.raw_names);
     // console.log(links.messageLinks);
     console.log('data fetched');
 
-    if (links.messageLinks.length === names.firstNames.length){
-        console.log('sending messages with names');
-        await initMessages(browser, links.messageLinks, names.firstNames);
-    }
-    else{
-        console.log('sending messages without name, length mismatch!');
-        await initMessages(browser, links.messageLinks);
-    }
+    // if (links.messageLinks.length === names.firstNames.length){
+    //     console.log('sending messages with names');
+    //     await initMessages(browser, links.messageLinks, names.firstNames);
+    // }
+    // else{
+    //     console.log('sending messages without name, length mismatch!');
+    //     await initMessages(browser, links.messageLinks);
+    // }
 
     await page.waitFor(10000);
-    console.log('messages sent...\nThanks :D');
+    console.log('messages sent...');
+    email.notifyMe(links.profileLinks, names.fullNames);
+    console.log('sending mail notification...');
     await browser.close();
 }
 
