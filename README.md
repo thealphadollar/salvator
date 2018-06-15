@@ -48,7 +48,7 @@ However, it is recommended to [add a cronjob](https://www.cyberciti.biz/faq/how-
 favorable 00:05 hours. By this time facebook updates the list of birthdays and hence you could be among the first to
  wish.
  
-For example, the below cronjob launches the script everyday at 00:05 hours and logs the sys.stdout into cron.log
+For example, the below cronjob launches the script everyday at 00:05 (local system timezone is followed) and logs the sys.stdout into cron.log
 ```
 5 0 * * * nodejs /path/to/salvator/index.js >> ~/cron.log
 ``` 
