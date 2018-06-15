@@ -68,9 +68,8 @@ async function initMessages(browser, messageLinks, firstNames=undefined) {
     }
 }
 
-async function openFB() {
+async function main() {
     const browser = await pup.launch({
-        headless: false,
         args: ['--no-sandbox']
     });
     const page = await browser.newPage();
@@ -91,14 +90,14 @@ async function openFB() {
     // console.log(links.messageLinks);
     console.log('data fetched');
 
-    // if (links.messageLinks.length === names.firstNames.length){
-    //     console.log('sending messages with names');
-    //     await initMessages(browser, links.messageLinks, names.firstNames);
-    // }
-    // else{
-    //     console.log('sending messages without name, length mismatch!');
-    //     await initMessages(browser, links.messageLinks);
-    // }
+    if (links.messageLinks.length === names.firstNames.length){
+        console.log('sending messages with names');
+        await initMessages(browser, links.messageLinks, names.firstNames);
+    }
+    else{
+        console.log('sending messages without name, length mismatch!');
+        await initMessages(browser, links.messageLinks);
+    }
 
     await page.waitFor(10000);
     console.log('messages sent...');
@@ -107,4 +106,4 @@ async function openFB() {
     await browser.close();
 }
 
-module.exports = {openFB};
+module.exports = {main};
