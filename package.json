@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-salvator",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "The Saviour, When You Forget Birthdays",
   "main": "index.js",
   "scripts": {
