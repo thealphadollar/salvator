@@ -1,10 +1,13 @@
+const path = require('path');
 const pup = require('puppeteer');
 const resolveData = require('./resolve_raw_data');
 const email = require('./email_notification');
 
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').load(); // load environment variables from .env file
-}
+const PATH_TO_DOTENV = path.resolve(__dirname, '.env');
+
+require('dotenv').config({
+    path: PATH_TO_DOTENV
+});
 
 const LOGIN_URL = 'https://www.fb.com/login';
 const BIRTHDAY_URL =  'https://www.facebook.com/events/birthdays/';
