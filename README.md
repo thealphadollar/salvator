@@ -38,6 +38,9 @@ EMAIL_PASS=<password for the email>
 MAILTO=<notification will be sent to this address>
 ```
 
+You also need to [enable access to less secure apps](https://support.google.com/a/answer/6260879?hl=en) in your GMail account (the
+client only supports sending from gmail accounts).
+
 You can also create a `.env` file in the `salvator` folder with the above mentioned environment variables.
 
 Salvator can be launched manually using the commands,
