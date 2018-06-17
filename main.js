@@ -52,7 +52,7 @@ async function getRawBirthdayData(page) {
 }
 
 async function sendMessage(page, link, message){
-    await page.goto(link);
+    await page.goto(link, {waitUntil: 'networkidle2'});
     await page.keyboard.type(message);
     await page.keyboard.press('Enter');
 }
