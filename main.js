@@ -1,9 +1,11 @@
 const path = require('path');
+const os = require('os');
 const pup = require('puppeteer');
 const resolveData = require('./resolve_raw_data');
 const email = require('./email_notification');
 
 const PATH_TO_DOTENV = path.resolve(__dirname, '.env');
+const THREE_GB = 3072*1024*1024;
 
 require('dotenv').config({
     path: PATH_TO_DOTENV
@@ -55,24 +57,36 @@ async function sendMessage(page, link, message){
     await page.goto(link, {waitUntil: 'networkidle2'});
     await page.keyboard.type(message);
     await page.keyboard.press('Enter');
+    await page.waitFor(1000);
+    await page.close();
 }
 
 async function initMessages(browser, messageLinks, firstNames=undefined) {
-    for(let i=0; i<messageLinks.length; i++){
+    let to_await = false;
+    if (os.totalmem() < THREE_GB) {
+        to_await = true;
+    }
+
+    for(let i=0; i<messageLinks.length; i++) {
         let message = undefined;
-        if (firstNames){
+        if (firstNames) {
             message = 'Hey ' + firstNames[i] + '! Happy Birthday :D';
         }
         else {
             message = 'Hey! Happy Birthday :D';
         }
         const page = await browser.newPage();
-        sendMessage(page, messageLinks[i], message);
+        if (to_await) {
+            await sendMessage(page, messageLinks[i], message);
+        } else {
+            sendMessage(page, messageLinks[i], message);
+        }
     }
 }
 
 async function main() {
     const browser = await pup.launch({
+        // headless: false,
         args: ['--no-sandbox']
     });
     const page = await browser.newPage();
