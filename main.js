@@ -38,8 +38,10 @@ async function getRawBirthdayData(page) {
         console.log('birthday page opened\nscraping birthdays...');
 
         const results = await page.evaluate(() => {
-            let raw_links = document.querySelector('#birthdays_content > div._4-u2._tzh._fbBirthdays__todayCard._4-u8 > div:nth-child(2)').innerHTML;
-            let raw_names = document.querySelector('#birthdays_content > div._4-u2._tzh._fbBirthdays__todayCard._4-u8 > div:nth-child(2)').innerText;
+            let raw_links = document.querySelector('#birthdays_content > div:nth-child(1) > div:nth-child(2) > ul').innerHTML;
+            let raw_names = document.querySelector('#birthdays_content > div:nth-child(1) > div:nth-child(2) > ul').innerText;
+            // console.log(raw_links);
+            // console.log(raw_names);
 
             return {
                 raw_links,
