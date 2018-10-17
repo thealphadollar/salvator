@@ -31,11 +31,14 @@ async function resolveLinks(raw_links){
     }
     let messageLinks = [];
     for (let i=0; i<profileLinks.length; i++){
+        profileLinks[i] = profileLinks[i].split('?')[0];
+        console.log("profile link: " + profileLinks[i]);
         if (profileLinks[i].indexOf('id') !== -1) {
             messageLinks.push(profileLinks[i].replace('com/profile.php?id=', 'com/messages/t/'));
         } else{
             messageLinks.push(profileLinks[i].replace('com/', 'com/messages/t/'));
         }
+        console.log("messenger link: " + messageLinks[i]);
     }
 
     return {
