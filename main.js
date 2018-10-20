@@ -78,7 +78,7 @@ async function initMessages(browser, messageLinks, firstNames=undefined) {
             message = 'Hey! Happy Birthday :D';
         }
         const page = await browser.newPage();
-        // to_await=true;
+        to_await=true;
         if (to_await) {
             // console.log(messageLinks[i]);
             await sendMessage(page, messageLinks[i], message);
