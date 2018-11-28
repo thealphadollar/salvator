@@ -1,5 +1,7 @@
 ### Salvator: The Saviour, When You Forget Birthdays
 
+[![Join the chat at https://gitter.im/salvator_/Lobby](https://badges.gitter.im/salvator_/Lobby.svg)](https://gitter.im/salvator_/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ## What is Salvator?
 Salvator is a bot which uses puppeteer to scrape the list of birthdays from facebook and sends them a personal
 message.
