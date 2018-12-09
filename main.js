@@ -112,10 +112,10 @@ async function main() {
     console.log('data fetched');
 	
     if (links.messageLinks.length === 0){
-	console.log("No Birthdays found. Exiting in 3 seconds...");
-	await page.waitFor(3000);
-	await browser.close();
-	return;
+    	console.log("No Birthdays found. Exiting in 3 seconds...");
+	    await page.waitFor(3000);
+	    await browser.close();
+	    return;
     }
     if (links.messageLinks.length === names.firstNames.length){
         console.log('sending messages with names');
