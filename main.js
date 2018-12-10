@@ -51,7 +51,7 @@ async function getRawBirthdayData(page) {
     try {
         await page.goto(BIRTHDAY_URL);
         console.log('birthday page opened\nscraping birthdays...');
-        await page.waitFor(5000);
+        await page.waitFor(1000);
         const results = await page.evaluate(() => {
             let raw_links = document.querySelector('#birthdays_content > div:nth-child(1) > div:nth-child(2) > ul').innerHTML;
             let raw_names = document.querySelector('#birthdays_content > div:nth-child(1) > div:nth-child(2) > ul').innerText;
