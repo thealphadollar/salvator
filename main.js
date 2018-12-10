@@ -18,7 +18,7 @@ const fbPass = process.env.FB_PASS;
 
 async function genWish()
 {
-var wishes = [
+  const wishes = [
   'Happy Birthday !!',
   'Happy Birthday! Have a blast.',
   'Many more happy returns of the day',
@@ -28,7 +28,7 @@ var wishes = [
   'Happy Birthday!! May all of your birthday wishes come true.',
   'Happy Birthday! Welcome to the new age.'];
 
-  var randomnumber = await Math.floor(Math.random() * (wishes.length)) ;
+  let randomnumber = await Math.floor(Math.random() * (wishes.length)) ;
   return wishes[randomnumber];
 }
 async function login(page) {
@@ -71,8 +71,8 @@ async function getRawBirthdayData(page) {
 async function sendMessage(page, link, message){
     await page.goto(link, {waitUntil: 'networkidle2'});
     await page.keyboard.type(message);
-    //await page.keyboard.press('Enter');
-    await page.waitFor(1000);
+    await page.keyboard.press('Enter');
+    await page.waitFor(5000);
     await page.close();
 }
 
@@ -107,8 +107,8 @@ async function initMessages(browser, messageLinks, prevLinks, firstNames=undefin
 
 async function checkHistory(){
   array=[];
-	var d1=new Date();
-  var fs = require('fs');
+	const d1=new Date();
+  const fs = require('fs');
   try {
       var data= fs.readFileSync('data.json', 'utf8');
       var obj=JSON.parse(data);
@@ -116,8 +116,8 @@ async function checkHistory(){
       console.log('Error:', e.stack);
   }
 
-	var d2=new Date(obj['date']);
-	var flag=(d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() &&d1.getDate() === d2.getDate());
+	const d2=new Date(obj['date']);
+	let flag=(d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() &&d1.getDate() === d2.getDate());
 
   if(flag===false)
     return array;
@@ -129,8 +129,8 @@ async function checkHistory(){
 }
 
 async function writeHistory(messageLinks, prevLinks){
-	var d=new Date();
-  var list=[];
+	const d=new Date();
+  let list=[];
   for(let i=0;i<messageLinks.length;i++){
     list.push(messageLinks[i]);
   }
@@ -139,7 +139,7 @@ async function writeHistory(messageLinks, prevLinks){
       continue;
     list.push(prevLinks[i]);
   }
-  var obj={};
+  let obj={};
   obj.date=d;
   obj.links=list;
 
@@ -156,7 +156,7 @@ async function writeHistory(messageLinks, prevLinks){
 
 async function main() {
     const browser = await pup.launch({
-        headless: false,
+        //headless: false,
         args: ['--no-sandbox', '--disable-notifications']
     });
     const page = await browser.newPage();
