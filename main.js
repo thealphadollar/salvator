@@ -16,6 +16,21 @@ const BIRTHDAY_URL =  'https://www.facebook.com/events/birthdays/';
 const fbID = process.env.FB_ID;
 const fbPass = process.env.FB_PASS;
 
+async function genWish()
+{
+var wishes = [
+  'Happy Birthday !!',
+  'Happy Birthday! Have a blast.',
+  'Many more happy returns of the day',
+  'I wish you all the happiness in the world! Happy Birthday.',
+  'Just live it out to the fullest and have fun! Happy Birthday',
+  'I hope you have the best day ever. Happy Birthday!',
+  'Happy Birthday!! May all of your birthday wishes come true.',
+  'Happy Birthday! Welcome to the new age.'];
+
+  var randomnumber = await Math.floor(Math.random() * (wishes.length)) ;
+  return wishes[randomnumber];
+}
 async function login(page) {
     try {
         await page.goto(LOGIN_URL);
@@ -56,7 +71,7 @@ async function getRawBirthdayData(page) {
 async function sendMessage(page, link, message){
     await page.goto(link, {waitUntil: 'networkidle2'});
     await page.keyboard.type(message);
-    await page.keyboard.press('Enter');
+    //await page.keyboard.press('Enter');
     await page.waitFor(1000);
     await page.close();
 }
@@ -71,11 +86,12 @@ async function initMessages(browser, messageLinks, prevLinks, firstNames=undefin
         let message = undefined;
         if(prevLinks.indexOf(messageLinks[i])>-1)
           continue;
+        var ranWish=await genWish();
         if (firstNames) {
-            message = 'Hey ' + firstNames[i] + '! Happy Birthday :D.';
+            message = 'Hey ' + firstNames[i] +' '+ ranWish;
         }
         else {
-            message = 'Hey! Happy Birthday :D.';
+            message = 'Hey! '+ranWish;
         }
         const page = await browser.newPage();
         to_await=true;
@@ -102,7 +118,7 @@ async function checkHistory(){
 
 	var d2=new Date(obj['date']);
 	var flag=(d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() &&d1.getDate() === d2.getDate());
-  console.log(flag);
+
   if(flag===false)
     return array;
   for(let i=0;i<obj["links"].length;i++)
@@ -140,8 +156,8 @@ async function writeHistory(messageLinks, prevLinks){
 
 async function main() {
     const browser = await pup.launch({
-        //headless: false,
-        args: ['--no-sandbox']
+        headless: false,
+        args: ['--no-sandbox', '--disable-notifications']
     });
     const page = await browser.newPage();
 
