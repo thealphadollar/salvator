@@ -36,12 +36,10 @@ async function getRawBirthdayData(page) {
     try {
         await page.goto(BIRTHDAY_URL);
         console.log('birthday page opened\nscraping birthdays...');
-
+        await page.waitFor(5000);
         const results = await page.evaluate(() => {
             let raw_links = document.querySelector('#birthdays_content > div:nth-child(1) > div:nth-child(2) > ul').innerHTML;
             let raw_names = document.querySelector('#birthdays_content > div:nth-child(1) > div:nth-child(2) > ul').innerText;
-            // console.log(raw_links);
-            // console.log(raw_names);
 
             return {
                 raw_links,
@@ -63,7 +61,7 @@ async function sendMessage(page, link, message){
     await page.close();
 }
 
-async function initMessages(browser, messageLinks, firstNames=undefined) {
+async function initMessages(browser, messageLinks, prevLinks, firstNames=undefined) {
     let to_await = false;
     if (os.totalmem() < THREE_GB) {
         to_await = true;
@@ -71,26 +69,78 @@ async function initMessages(browser, messageLinks, firstNames=undefined) {
 
     for(let i=0; i<messageLinks.length; i++) {
         let message = undefined;
+        if(prevLinks.indexOf(messageLinks[i])>-1)
+          continue;
         if (firstNames) {
-            message = 'Hey ' + firstNames[i] + '! Happy Birthday :D';
+            message = 'Hey ' + firstNames[i] + '! Happy Birthday :D.';
         }
         else {
-            message = 'Hey! Happy Birthday :D';
+            message = 'Hey! Happy Birthday :D.';
         }
         const page = await browser.newPage();
         to_await=true;
         if (to_await) {
             // console.log(messageLinks[i]);
-            await sendMessage(page, messageLinks[i], message);
+             await sendMessage(page, messageLinks[i], message);
         } else {
-            sendMessage(page, messageLinks[i], message);
+             sendMessage(page, messageLinks[i], message);
         }
     }
 }
 
+
+async function checkHistory(){
+  array=[];
+	var d1=new Date();
+  var fs = require('fs');
+  try {
+      var data= fs.readFileSync('data.json', 'utf8');
+      var obj=JSON.parse(data);
+  } catch(e) {
+      console.log('Error:', e.stack);
+  }
+
+	var d2=new Date(obj['date']);
+	var flag=(d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() &&d1.getDate() === d2.getDate());
+  console.log(flag);
+  if(flag===false)
+    return array;
+  for(let i=0;i<obj["links"].length;i++)
+    array[i]=obj["links"][i];
+
+  console.log("previous links array generated successfully");
+  return array;
+}
+
+async function writeHistory(messageLinks, prevLinks){
+	var d=new Date();
+  var list=[];
+  for(let i=0;i<messageLinks.length;i++){
+    list.push(messageLinks[i]);
+  }
+  for(let i=0;i<prevLinks.length;i++){
+    if(list.indexOf(prevLinks[i])>-1)
+      continue;
+    list.push(prevLinks[i]);
+  }
+  var obj={};
+  obj.date=d;
+  obj.links=list;
+
+  const fs=require('fs');
+  const content=JSON.stringify(obj);
+
+  fs.writeFile('data.json', content, 'utf8', function (err) {
+    if (err) {
+        return console.log(err);
+    }
+    console.log("The file was saved!");
+    });
+}
+
 async function main() {
     const browser = await pup.launch({
-        // headless: false,
+        //headless: false,
         args: ['--no-sandbox']
     });
     const page = await browser.newPage();
@@ -110,20 +160,24 @@ async function main() {
     const names = await resolveData.resolveNames(birthday_data.raw_names);
     // console.log(links.messageLinks);
     console.log('data fetched');
-    
+
+    console.log('Checking write history');
+    const prevLinks=await checkHistory();
+    writeHistory(links.messageLinks,prevLinks);
+
     if (links.messageLinks.length === 0){
-	    console.log("No Birthdays found. Exiting in 3 seconds...");
-	    await page.waitFor(3000);
-	    await browser.close();
-	    return;
+     console.log("No Birthdays found. Exiting in 3 seconds...");
+     await page.waitFor(3000);
+     await browser.close();
+     return;
     }
     if (links.messageLinks.length === names.firstNames.length){
         console.log('sending messages with names');
-        await initMessages(browser, links.messageLinks, names.firstNames);
+        await initMessages(browser, links.messageLinks,prevLinks, names.firstNames);
     }
     else{
         console.log('sending messages without name, length mismatch!');
-        await initMessages(browser, links.messageLinks);
+        await initMessages(browser, links.messageLinks, prevLinks);
     }
 
     await page.waitFor(10000);
