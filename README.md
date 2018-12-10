@@ -14,6 +14,8 @@ logs in. There after it navigates to the birthday events page, scrapes the profi
 the messenger link using it and sends them a personalised message.<br/>
 E.g `Hey thealphadollar! Happy Birthday :D`, if user's first name is "thealphadollar".
 
+To avoid sending multiple wishes, the program creates a json file with a timestamp and a list with the links already wished. When the file is read, if the timestamp matches the day, the redundancies are avoided.
+
 ## Install
 Salvator can be installed using npm or source.
 
@@ -49,14 +51,14 @@ client only supports sending from gmail accounts).
 After you are done with *installation*, Salvator can be launched manually using the command :
 - `node index.js`, from source directory
 
-However, it is recommended to [add a cronjob](https://www.cyberciti.biz/faq/how-do-i-add-jobs-to-cron-under-linux-or-unix-oses/) to automatically launch the client at the desired time, 
+However, it is recommended to [add a cronjob](https://www.cyberciti.biz/faq/how-do-i-add-jobs-to-cron-under-linux-or-unix-oses/) to automatically launch the client at the desired time,
 favorable 00:05 hours. By this time facebook updates the list of birthdays and hence you could be among the first to
  wish.
- 
+
 For example, the below cronjob launches the script everyday at 00:05 (local system timezone is followed) and logs the sys.stdout into cron.log
 ```
 5 0 * * * nodejs /path/to/salvator/index.js >> ~/cron.log
-``` 
+```
 ## Contributing
 Contributions are welcome, please look in the issues tab to contribute.
 
