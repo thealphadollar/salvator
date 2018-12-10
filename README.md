@@ -17,7 +17,7 @@ E.g `Hey thealphadollar! Happy Birthday :D`, if user's first name is "thealphado
 ## Install
 Salvator can be installed using npm or source.
 
-* ### Install using npm
+* ### Install using npm (Not recommened, still in development)
     1. [Install npm](https://www.npmjs.com/get-npm)
     2. `npm install -g puppeteer-salvator`
 
@@ -46,8 +46,7 @@ client only supports sending from gmail accounts).
 
 
 
-After you are done with *installation*, Salvator can be launched manually using the commands :
-- `puppeteer-salvator`, if installed from npm
+After you are done with *installation*, Salvator can be launched manually using the command :
 - `node index.js`, from source directory
 
 However, it is recommended to [add a cronjob](https://www.cyberciti.biz/faq/how-do-i-add-jobs-to-cron-under-linux-or-unix-oses/) to automatically launch the client at the desired time, 
