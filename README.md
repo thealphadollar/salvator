@@ -12,14 +12,14 @@ It also sends the user an email notification with the list of birthdays and thei
 Puppeteer uses a headless browser to navigate to `facebook.com/login` and using the credentials from the `.env` file,
 logs in. There after it navigates to the birthday events page, scrapes the profile links for birthday people, forms
 the messenger link using it and sends them a personalised message.<br/>
-E.g `Hey thealphadollar! Happy Birthday :D`, if user's first name is "thealphadollar".
+E.g `Hey thealphadollar! Happy Birthday :D`, if user's first name is "thealphadollar".The message is randomized from a stored list.
 
 To avoid sending multiple wishes, the program creates a json file with a timestamp and a list with the links already wished. When the file is read, if the timestamp matches the day, the redundancies are avoided.
 
 ## Install
 Salvator can be installed using npm or source.
 
-* ### Install using npm (Not recommened, still in development)
+* ### Install using npm
     1. [Install npm](https://www.npmjs.com/get-npm)
     2. `npm install -g puppeteer-salvator`
 
@@ -48,7 +48,8 @@ client only supports sending from gmail accounts).
 
 
 
-After you are done with *installation*, Salvator can be launched manually using the command :
+After you are done with *installation*, Salvator can be launched manually using the commands :
+- `puppeteer-salvator`, if installed from npm
 - `node index.js`, from source directory
 
 However, it is recommended to [add a cronjob](https://www.cyberciti.biz/faq/how-do-i-add-jobs-to-cron-under-linux-or-unix-oses/) to automatically launch the client at the desired time,

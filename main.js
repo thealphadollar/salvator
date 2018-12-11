@@ -16,6 +16,21 @@ const BIRTHDAY_URL =  'https://www.facebook.com/events/birthdays/';
 const fbID = process.env.FB_ID;
 const fbPass = process.env.FB_PASS;
 
+async function genWish()
+{
+  const wishes = [
+  'Happy Birthday !!',
+  'Happy Birthday! Have a blast.',
+  'Many more happy returns of the day',
+  'I wish you all the happiness in the world! Happy Birthday.',
+  'Just live it out to the fullest and have fun! Happy Birthday',
+  'I hope you have the best day ever. Happy Birthday!',
+  'Happy Birthday!! May all of your birthday wishes come true.',
+  'Happy Birthday! Welcome to the new age.'];
+
+  let randomnumber = await Math.floor(Math.random() * (wishes.length)) ;
+  return wishes[randomnumber];
+}
 async function login(page) {
     try {
         await page.goto(LOGIN_URL);
@@ -71,11 +86,12 @@ async function initMessages(browser, messageLinks, prevLinks, firstNames=undefin
         let message = undefined;
         if(prevLinks.indexOf(messageLinks[i])>-1)
           continue;
+        var ranWish=await genWish();
         if (firstNames) {
-            message = 'Hey ' + firstNames[i] + '! Happy Birthday :D.';
+            message = 'Hey ' + firstNames[i] +' '+ ranWish;
         }
         else {
-            message = 'Hey! Happy Birthday :D.';
+            message = 'Hey! '+ranWish;
         }
         const page = await browser.newPage();
         to_await=true;
@@ -91,8 +107,8 @@ async function initMessages(browser, messageLinks, prevLinks, firstNames=undefin
 
 async function checkHistory(){
   array=[];
-	var d1=new Date();
-  var fs = require('fs');
+	const d1=new Date();
+  const fs = require('fs');
   try {
       var data= fs.readFileSync('data.json', 'utf8');
       var obj=JSON.parse(data);
@@ -100,9 +116,9 @@ async function checkHistory(){
       console.log('Error:', e.stack);
   }
 
-	var d2=new Date(obj['date']);
-	var flag=(d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() &&d1.getDate() === d2.getDate());
-  console.log(flag);
+	const d2=new Date(obj['date']);
+	let flag=(d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() &&d1.getDate() === d2.getDate());
+
   if(flag===false)
     return array;
   for(let i=0;i<obj["links"].length;i++)
@@ -113,8 +129,8 @@ async function checkHistory(){
 }
 
 async function writeHistory(messageLinks, prevLinks){
-	var d=new Date();
-  var list=[];
+	const d=new Date();
+  let list=[];
   for(let i=0;i<messageLinks.length;i++){
     list.push(messageLinks[i]);
   }
@@ -123,7 +139,7 @@ async function writeHistory(messageLinks, prevLinks){
       continue;
     list.push(prevLinks[i]);
   }
-  var obj={};
+  let obj={};
   obj.date=d;
   obj.links=list;
 
@@ -141,7 +157,7 @@ async function writeHistory(messageLinks, prevLinks){
 async function main() {
     const browser = await pup.launch({
         //headless: false,
-        args: ['--no-sandbox']
+        args: ['--no-sandbox', '--disable-notifications']
     });
     const page = await browser.newPage();
 
