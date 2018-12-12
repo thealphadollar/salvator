@@ -60,6 +60,14 @@ For example, the below cronjob launches the script everyday at 00:05 (local syst
 ```
 5 0 * * * nodejs /path/to/salvator/index.js >> ~/cron.log
 ```
+
+The cronjob can be added by executing the file cron.sh
+
+Make sure the file has appropriate permissions and if not run the following
+```
+chmod a+x cron.sh
+```
+
 ## Contributing
 Contributions are welcome, please look in the issues tab to contribute.
 
