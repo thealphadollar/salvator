@@ -13,7 +13,7 @@ echo "Press 1 to add a new cron job, 2 to delete existing or 3 te view all cron 
 read op
 if [ $op -eq 1 ];then 
   read -p "Enter time in hh mm format " h m
-  crontab -l | { cat; echo "$m $h * * *  node $PWD/index.js"; } | crontab -
+  crontab -l | { cat; echo "$m $h * * *  /usr/local/bin/node $PWD/index.js"; } | crontab -
   crontab -l
 elif [ $op -eq 2 ];then
   crontab -l | grep -v "node $PWD/index.js"  | crontab -
