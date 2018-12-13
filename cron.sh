@@ -5,12 +5,34 @@
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' cron|grep "install ok installed")
 echo "Checking for cron: $PKG_OK"
 if [ "" == "$PKG_OK" ]; then
-  echo "Cron not installed. Setting up cron"
-  sudo apt-get --force-yes --yes install cron
+  echo "Cron not installed. Do you want to set it up? (y/n)"
+  read o
+  if [ $o == "y" ];then
+	 echo "Installing cron"
+ 	 sudo apt-get --force-yes --yes install cron
+  else
+  	 echo "Install aborted. Exiting."
+	 exit 1
+  fi
+fi
+
+#Check if node is installed 
+PKG_OK=$(dpkg-query -W --showformat='${Status}\n' nodejs|grep "install ok installed")
+echo "Checking for node: $PKG_OK"
+if [ "" == "$PKG_OK" ]; then
+  echo "Node not installed. Do you want to set it up? (y/n)"
+  read o
+  if [ $o == "y" ];then
+	 echo "Installing nodejs"
+ 	 sudo apt-get --force-yes --yes install nodejs
+  else
+  	 echo "Install aborted. Exiting."
+	 exit 1
+  fi
 fi
 
 #Locate install path of node
-nodel=$(which node)
+nodel=$(which nodejs)
 
 echo "Press 1 to add a new cron job, 2 to delete existing or 3 te view all cron jobs"
 #reads user operation from terminal
