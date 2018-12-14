@@ -118,7 +118,7 @@ if (NO_COMMAND_SPECIFIED) {
 /*
 Steps to test this cli-tool locally:
 1. npm link
-2. open terminal, run 'puppeteer-salvator'
+2. open terminal, run 'puppeteer-salvator' from anywhere
 3. when done checking, run 'npm unlink'
 4. (for the owner of this repo) : run 'npm publish' to publish this as an npm cli-tool on npmjs.com
 */
