@@ -1,61 +1,73 @@
 #!/usr/bin/env node
 
 const program = require("commander");
-const { prompt, Separator } = require("inquirer");
-const pjson = require("./package.json");
+const inquirer = require("inquirer");
 const chalk = require("chalk");
+const execa = require("execa");
+const Listr = require("listr");
+const input = require("listr-input");
+const fs = require("fs");
+const Observable = require('rxjs').Observable;
+const through = require('through');
 
-const env_query = [
-  {
-    type: "input",
-    name: "FB_ID",
-    message: chalk.green("Your Facebook Id(Eg: John.lennon.84):")
+const pjson = require("./package.json");
+const {env_query} = require('./questions_cli.js')
+
+
+
+
+const tasks = new Listr([
+  /*{
+    title: "Install package dependencies with npm",
+    //enabled: ctx => ctx.yarn === false,
+    task: () => execa("npm", ["install"])
   },
+  ,*/
   {
-    type: "input",
-    name: "FB_PASS",
-    message: chalk.green("Your Facebook password:")
-  },
-  {
-    type: "input",
-    name: "EMAIL",
-    message: chalk.green("Your email address:")
-  },
-  {
-    type: "input",
-    name: "EMAIL_PASS",
-    message: chalk.green("Password of your email account:")
-  },
-  {
-    type: "input",
-    name: "MAILTO",
-    default: (env_values) => (env_values.EMAIL),
-    message: chalk.green("Email address to send notification:")
-  },
-  {
-    type: "list",
-    name: "sam",
-    choices: ["choice a", new Separator(), "choice b", "c"],
-    message: chalk.red("Choose one")
+    title: "Enter environment variables",
+    task: () => {
+      return new Observable(observer => {
+        let buffer = "";
+
+        const outputStream = through(data => {
+          if (/\u001b\[.*?(D|C)$/.test(data)) {
+            if (buffer.length > 0) {
+              observer.next(buffer);
+              buffer = "";
+            }
+            return;
+          }
+
+          buffer += data;
+        });
+
+        const prompt = inquirer.createPromptModule({
+          output: outputStream
+        });
+
+        prompt(env_query)
+          .then(env_values => {
+            observer.next(); // Clear the output
+						const file = fs.createWriteStream('.log');
+						for(let property in env_values) {
+							file.write(`${property}:${env_values[property]}\n`);
+						}
+						file.end();
+					})
+					.then(() => {
+						observer.complete();
+					})
+          .catch(err => {
+            observer.error(err);
+					});
+        return outputStream;
+      });
+    }
+	},
+	{
+    title: "Running index.js",
+    task: () => execa("node", ["index.js"])
   }
-];
+]);
 
-//CLI-info
-program.version(pjson.version, "-v --version").description(pjson.description);
-
-program
-  .command('env')
-  .alias('e')
-  .description('Creates a .env file and stores the environment variables')
-  .action(() => {
-    prompt(env_query).then((env_values) => {
-      console.log(env_values);
-    });
-  });
-
-program.parse(process.argv);
-
-/*
-run directly from terminal using ./cli.js
-remember to run : npm unlink
-*/
+tasks.run().catch(err => console.error(err));
