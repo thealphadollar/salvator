@@ -154,9 +154,14 @@ async function writeHistory(messageLinks, prevLinks){
     });
 }
 
+
+
+
+
+
 async function main() {
     const browser = await pup.launch({
-        //headless: false,
+        headless: false,
         args: ['--no-sandbox', '--disable-notifications']
     });
     const page = await browser.newPage();
