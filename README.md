@@ -8,6 +8,8 @@ message.
 
 It also sends the user an email notification with the list of birthdays and their profile link.
 
+![puppeteer-salvator cli in action!!](screenshots/main.jpg)
+
 ## How does it work?
 Puppeteer uses a headless browser to navigate to `facebook.com/login` and using the credentials from the `.env` file,
 logs in. There after it navigates to the birthday events page, scrapes the profile links for birthday people, forms
@@ -60,6 +62,14 @@ For example, the below cronjob launches the script everyday at 00:05 (local syst
 ```
 5 0 * * * nodejs /path/to/salvator/index.js >> ~/cron.log
 ```
+
+The cronjob can be added by executing the file cron.sh
+
+Make sure the file has appropriate permissions and if not run the following
+```
+chmod a+x cron.sh
+```
+
 ## Contributing
 Contributions are welcome, please look in the issues tab to contribute.
 
