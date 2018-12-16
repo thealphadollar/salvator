@@ -16,12 +16,21 @@
   ],
   "author": "github@thealphadollar",
   "license": "MIT",
+  "bin": {
+    "puppeteer-salvator": "./cli.js"
+  },
   "bugs": {
     "url": "https://github.com/thealphadollar/salvator/issues"
   },
   "homepage": "https://github.com/thealphadollar/salvator#readme",
   "dependencies": {
+    "chalk": "^2.4.1",
+    "commander": "^2.19.0",
     "dotenv": "^6.0.0",
+    "execa": "^1.0.0",
+    "inquirer": "^6.2.1",
+    "listr": "^0.14.3",
+    "log-symbols": "^2.2.0",
     "nodemailer": "^4.6.7",
     "puppeteer": "^1.5.0"
   }
