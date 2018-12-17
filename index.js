@@ -1,3 +1,3 @@
-const PIPE = require('./main.js');
+const PIPE = require("./main.js");
 
 PIPE.main();
