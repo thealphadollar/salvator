@@ -72,5 +72,9 @@ chmod a+x cron.sh
 
 ## Contributing
 Contributions are welcome, please look in the issues tab to contribute.
+*   VSCode is recommended as the editor for this project.
+*   Install eslint plugin for vscode.
+*   Use this [video][1] to setup eslint-prettier for vscode.
+*   Please read CONTRIBUTING.md guide to know more.
 
-Please read CONTRIBUTING.md guide to know more.
+[1]: https://www.youtube.com/watch?v=YIvjKId9m2c

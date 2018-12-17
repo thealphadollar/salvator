@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+/* eslint-disable camelcase */
 const program = require("commander");
 const inquirer = require("inquirer");
 const chalk = require("chalk");
@@ -29,9 +30,10 @@ program
   .action(() => {
     inquirer.prompt(env_query).then(env_values => {
       const file = fs.createWriteStream(PATH_TO_DOTENV);
-      for (let property in env_values) {
-        file.write(`${property}=${env_values[property]}\n`);
-      }
+      Object.keys(env_values).forEach(element => {
+        file.write(`${element}=${env_values[element]}\n`);
+      });
+
       file.end();
       console.log(
         chalk.green.bold(
@@ -88,7 +90,7 @@ program
 program
   .command("*")
   .description(chalk.blue("When no matching commands are entered"))
-  .action(function(env) {
+  .action((/* env */) => {
     console.log(logSymbols.warning, chalk.red(" Command not available"));
     console.log(chalk.blue("Type --help to see all the available commands"));
   });
