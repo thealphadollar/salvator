@@ -12,7 +12,7 @@ const logSymbols = require("log-symbols");
 const child_process = require("child_process");
 
 const pjson = require("./package.json");
-const { env_query } = require("./questions_cli.js");
+const { env_query } = require("./lib/cli/questions_cli.js");
 
 const PATH_TO_DOTENV = path.resolve(__dirname, '.env');
 const PATH_TO_INDEX = path.resolve(__dirname, 'index.js');
