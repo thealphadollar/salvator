@@ -11,6 +11,8 @@
     "no-console": "off",
     "no-underscore-dangle": "off",
     "no-plusplus": "off",
+    "no-continue": "off",
+    "camelcase": "off",
     "func-names": [
       "error",
       "never"
