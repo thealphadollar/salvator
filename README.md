@@ -30,6 +30,7 @@ Salvator can be installed using npm or source.
     2. `cd salvator`
     3. [Install npm](https://www.npmjs.com/get-npm)
     4. `npm install` (this step installs all the dependencies)
+    5. `npm link` - to link the CLI tool so that it can be used globally in your system.
 
 **NOTE: In case of any errors related to launching headless chrome, [install google-chrome-stable](https://www.linuxbabe.com/ubuntu/install-google-chrome-ubuntu-16-04-lts).
  It'll resolve all the dependency issues.**
@@ -43,7 +44,7 @@ EMAIL=<notification will be sent from this address>
 EMAIL_PASS=<password for the email>
 MAILTO=<notification will be sent to this address>
 ```
-**RECOMMENDED** : Create a `.env` file in the `salvator` folder with the above mentioned environment variables.
+**RECOMMENDED** : Create a `.env` file in the `salvator` folder with the above mentioned environment variables. Or you can do it using our CLI tool **puppeteer-salvator** by running the command `puppeteer-salvator env`.
 
 **NOTE** : You also need to [enable access to less secure apps](https://support.google.com/a/answer/6260879?hl=en) in your GMail account (the
 client only supports sending from gmail accounts).
@@ -51,7 +52,7 @@ client only supports sending from gmail accounts).
 
 
 After you are done with *installation*, Salvator can be launched manually using the commands :
-- `puppeteer-salvator`, if installed from npm
+- `puppeteer-salvator run`, if installed from npm 
 - `node index.js`, from source directory
 
 However, it is recommended to [add a cronjob](https://www.cyberciti.biz/faq/how-do-i-add-jobs-to-cron-under-linux-or-unix-oses/) to automatically launch the client at the desired time,
@@ -73,8 +74,11 @@ chmod a+x cron.sh
 ## Contributing
 Contributions are welcome, please look in the issues tab to contribute.
 *   VSCode is recommended as the editor for this project.
-*   Install eslint plugin for vscode.
-*   Use this [video][1] to setup eslint-prettier for vscode.
+*   Install eslint plugin for vscode. Use this [video][1] to setup eslint-prettier for vscode.
+*   Please follow [JSDoc][3] for your submitted code. Use [DocumentThis][2] plugin      if required.
 *   Please read CONTRIBUTING.md guide to know more.
+*   Write tests for complicated components and modules.
 
 [1]: https://www.youtube.com/watch?v=YIvjKId9m2c
+[2]: https://marketplace.visualstudio.com/items?itemName=joelday.docthis
+[3]: http://usejsdoc.org/
