@@ -19,7 +19,7 @@ fi
 #Locate install path of node and if not present attempts to install nodejs
 nodel=$(which nodejs || which node)
 echo "Checking node path: $nodel"
-found=$(echo $nodel | grep -E "node|nodejs")
+found=$(echo $nodel | grep -E "/node|/nodejs")
 
 if [ "$found" == "" ];then 
 echo "Node not installed. Do you want to set it up? (y/n)"
