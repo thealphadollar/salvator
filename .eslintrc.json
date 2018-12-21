@@ -13,6 +13,7 @@
     "no-plusplus": "off",
     "no-continue": "off",
     "camelcase": "off",
+    "no-empty": "off",
     "func-names": [
       "error",
       "never"
