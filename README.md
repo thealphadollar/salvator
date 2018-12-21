@@ -10,6 +10,9 @@ It also sends the user an email notification with the list of birthdays and thei
 
 ![puppeteer-salvator cli in action!!](screenshots/main.jpg)
 
+
+![puppeteer-salvator cli in action!!](screenshots/Screenshot&#32;from&#32;2018-12-21&#32;21-08-43.jpeg)
+
 ## How does it work?
 Puppeteer uses a headless browser to navigate to `facebook.com/login` and using the credentials from the `.env` file,
 logs in. There after it navigates to the birthday events page, scrapes the profile links for birthday people, forms

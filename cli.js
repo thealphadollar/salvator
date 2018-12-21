@@ -153,9 +153,7 @@ program
         count++;
       });
       await browser.close();
-    } catch (err) {
-      console.log(`${err}`);
-    }
+    } catch (err) { }
   });
 
 program
