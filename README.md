@@ -73,6 +73,13 @@ Make sure the file has appropriate permissions and if not run the following
 ```
 chmod a+x cron.sh
 ```
+## Puppetter Salvator CLI tool
+
+The CLI tool provides an interface to interact with the CLI tool and utilize its functionality. The following set of commands are provided by the tool:
+* `puppeteer-salvator run` : Run the automated Birthday wish script
+* `puppeteer-salvator env` : Load environment variables in .env file(fb_id, fb_pass, email, ..)
+* `puppeteer-salvator cron` : Add a cronjob delete a cronjob, view all cronjobs
+* `puppeteer-salvator bth` :  Show all the birthdays for the current
 
 ## Contributing
 Contributions are welcome, please look in the issues tab to contribute.
