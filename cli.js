@@ -1,21 +1,36 @@
 #!/usr/bin/env node
 
 /* eslint-disable camelcase */
-const program = require("commander");
-const inquirer = require("inquirer");
+const fs = require("fs");
+const Ora = require("ora");
+const path = require("path");
 const chalk = require("chalk");
 const execa = require("execa");
 const Listr = require("listr");
-const fs = require("fs");
-const path = require("path");
+const pup = require("puppeteer");
+const program = require("commander");
+const inquirer = require("inquirer");
 const logSymbols = require("log-symbols");
 const child_process = require("child_process");
 
 const pjson = require("./package.json");
+const getBirthdayData = require('./lib/getBirthdayData');
 const { env_query } = require("./lib/cli/questions_cli.js");
 
 const PATH_TO_DOTENV = path.resolve(__dirname, '.env');
 const PATH_TO_INDEX = path.resolve(__dirname, 'index.js');
+const PATH_TO_CRON = path.resolve(__dirname, 'cron.sh');
+
+require("dotenv").config({
+  path: PATH_TO_DOTENV
+});
+
+
+const fbID = process.env.FB_ID;
+const fbPass = process.env.FB_PASS;
+
+
+/* --------------------------Commands ------------------------- */
 
 program
   .version(pjson.version, "-v --version")
@@ -100,10 +115,45 @@ program
   )
   .action(async () => {
     try {
-      child_process.execFileSync('./cron.sh', { stdio: 'inherit' });
+      child_process.execFileSync(PATH_TO_CRON, { stdio: 'inherit' });
     } catch (err) {
-      console.log(`Error: ${err}`);
+      console.log(`${err}`);
     }
+  });
+
+program
+  .command("bth")
+  .description(
+    chalk.blue(
+      "Show all the birthdays for the current day"
+    )
+  )
+  .action(async () => {
+    const spinner = new Ora({
+      text: chalk.green.bold('Getting the names of friends who have birthday today\n'),
+      spinner: process.argv[2],
+    });
+
+    spinner.start();
+    global.console = console || {};
+    console.log = function () { };
+
+    try {
+      const browser = await pup.launch({
+        // headless: false,
+        args: ["--no-sandbox", "--disable-notifications"]
+      });
+
+      const data = await getBirthdayData(browser, fbID, fbPass);
+      spinner.succeed();
+      let count = 1;
+      data.names.fullNames = data.names.fullNames.forEach(name => {
+        const bname = name.replace(/[0-9]/, (x) => ` - ${x}`);
+        process.stdout.write(chalk.yellow(`${count}.  ${bname} \n`));
+        count++;
+      });
+      await browser.close();
+    } catch (err) { }
   });
 
 program
