@@ -146,12 +146,17 @@ program
 
       const data = await getBirthdayData(browser, fbID, fbPass);
       spinner.succeed();
-      let count = 1;
-      data.names.fullNames = data.names.fullNames.forEach(name => {
-        const bname = name.replace(/[0-9]/, (x) => ` - ${x}`);
-        process.stdout.write(chalk.yellow(`${count}.  ${bname} \n`));
-        count++;
-      });
+      if (data.names.fullNames.length === 0) {
+        process.stdout.write(chalk.blue("No birthdays today!! \n"));
+      }
+      else {
+        let count = 1;
+        data.names.fullNames = data.names.fullNames.forEach(name => {
+          const bname = name.replace(/[0-9]/, (x) => ` - ${x}`);
+          process.stdout.write(chalk.yellow(`${count}.  ${bname} \n`));
+          count++;
+        });
+      }
       await browser.close();
     } catch (err) { }
   });
@@ -185,11 +190,3 @@ if (NO_COMMAND_SPECIFIED) {
   );
   program.help();
 }
-
-/*
-Steps to test this cli-tool locally:
-1. npm link
-2. open terminal, run 'puppeteer-salvator' from anywhere
-3. when done checking, run 'npm unlink'
-4. (for the owner of this repo) : run 'npm publish' to publish this as an npm cli-tool on npmjs.com
-*/
