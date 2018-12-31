@@ -4,7 +4,7 @@
 const fs = require("fs");
 const Ora = require("ora");
 const path = require("path");
-const chalk = require("chalk");
+require("colors");
 const execa = require("execa");
 const Listr = require("listr");
 const pup = require("puppeteer");
@@ -34,15 +34,11 @@ const fbPass = process.env.FB_PASS;
 
 program
   .version(pjson.version, "-v --version")
-  .description(chalk.yellowBright.bold(pjson.description));
+  .description(pjson.description.yellow.bold);
 
 program
   .command("env")
-  .description(
-    chalk.blue(
-      "Load environment variables in .env file(fb_id, fb_pass, email, ..)"
-    )
-  )
+  .description("Load environment variables in .env file(fb_id, fb_pass, email, ..)".blue)
   .action(() => {
     inquirer.prompt(env_query).then(env_values => {
       const file = fs.createWriteStream(PATH_TO_DOTENV);
@@ -51,21 +47,14 @@ program
       });
 
       file.end();
-      console.log(
-        chalk.green.bold(
-          "\n--------------------------------------------------------------\n"
-        )
-      );
-      console.log(
-        logSymbols.success,
-        chalk.green.bold("Environment variables loaded in .env file\n")
-      );
+      console.log("\n--------------------------------------------------------------\n".green.bold);
+      console.log(logSymbols.success, "Environment variables loaded in .env file\n".green.bold);
     });
   });
 
 program
   .command("run")
-  .description(chalk.blue("Run the automated Birthday wish script"))
+  .description("Run the automated Birthday wish script".blue)
   .action(() => {
     console.log("Running index.js");
     /*
@@ -108,11 +97,7 @@ program
 
 program
   .command("cron")
-  .description(
-    chalk.blue(
-      "Add a cronjob delete a cronjob, view all cronjobs"
-    )
-  )
+  .description("Add a cronjob delete a cronjob, view all cronjobs".blue)
   .action(async () => {
     try {
       child_process.execFileSync(PATH_TO_CRON, { stdio: 'inherit' });
@@ -123,14 +108,10 @@ program
 
 program
   .command("bth")
-  .description(
-    chalk.blue(
-      "Show all the birthdays for the current day"
-    )
-  )
+  .description("Show all the birthdays for the current day".blue)
   .action(async () => {
     const spinner = new Ora({
-      text: chalk.green.bold('Getting the names of friends who have birthday today\n'),
+      text: 'Getting the names of friends who have birthday today\n'.green.bold,
       spinner: process.argv[2],
     });
 
@@ -149,7 +130,7 @@ program
       let count = 1;
       data.names.fullNames = data.names.fullNames.forEach(name => {
         const bname = name.replace(/[0-9]/, (x) => ` - ${x}`);
-        process.stdout.write(chalk.yellow(`${count}.  ${bname} \n`));
+        process.stdout.write(`${count}.  ${bname} \n`.yellow);
         count++;
       });
       await browser.close();
@@ -158,10 +139,10 @@ program
 
 program
   .command("*")
-  .description(chalk.blue("When no matching commands are entered"))
+  .description("When no matching commands are entered".blue)
   .action((/* env */) => {
-    console.log(logSymbols.warning, chalk.red(" Command not available"));
-    console.log(chalk.blue("Type --help to see all the available commands"));
+    console.log(logSymbols.warning, " Command not available".red);
+    console.log("Type --help to see all the available commands".blue);
   });
 
 program.parse(process.argv);
@@ -170,19 +151,9 @@ program.parse(process.argv);
 const NO_COMMAND_SPECIFIED = program.args.length === 0;
 if (NO_COMMAND_SPECIFIED) {
   console.log("\n\n");
-  console.log(
-    chalk.yellow.bold(
-      "---------------------------------------------------------"
-    )
-  );
-  console.log(
-    chalk.greenBright.bold(`\n                   PUPPETEER SALVATOR\n`)
-  );
-  console.log(
-    chalk.yellow.bold(
-      "---------------------------------------------------------"
-    )
-  );
+  console.log("---------------------------------------------------------".yellow.bold);
+  console.log(`\n                   PUPPETEER SALVATOR\n`.green.bold);
+  console.log("---------------------------------------------------------".yellow.bold);
   program.help();
 }
 
