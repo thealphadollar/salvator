@@ -85,8 +85,8 @@ program
               process.stdout(data);
             }); */
             stream.pipe(process.stdout);
-          } catch (err) {
-            console.log(`Error: ${err}`);
+          } catch (e) {
+            process.stdout.write(`${logSymbols.error} ${e.message.red} \n`);
           }
         }
       }
@@ -101,8 +101,11 @@ program
   .action(async () => {
     try {
       child_process.execFileSync(PATH_TO_CRON, { stdio: 'inherit' });
-    } catch (err) {
-      console.log(`${err}`);
+    } catch (e) {
+      if (e.code === 'ENOENT')
+        process.stdout.write(` ${logSymbols.error.red} ${` cron.sh`.yellow} does not exist \n`);
+      else
+        process.stdout.write(`${logSymbols.error} ${e.message.red} \n`);
     }
   });
 
@@ -119,12 +122,12 @@ program
     global.console = console || {};
     console.log = function () { };
 
-    try {
-      const browser = await pup.launch({
-        // headless: false,
-        args: ["--no-sandbox", "--disable-notifications"]
-      });
+    const browser = await pup.launch({
+      // headless: false,
+      args: ["--no-sandbox", "--disable-notifications"]
+    });
 
+    try {
       const data = await getBirthdayData(browser, fbID, fbPass);
       spinner.succeed();
       if (data.names.fullNames.length === 0) {
@@ -139,7 +142,13 @@ program
         });
       }
       await browser.close();
-    } catch (err) { }
+    } catch (e) {
+      spinner.fail();
+
+      process.stdout.write(`${logSymbols.error} ${e.message.red} \n`);
+      await browser.close();
+      process.exit(0);
+    }
   });
 
 program
@@ -155,7 +164,6 @@ program.parse(process.argv);
 // when no arguments are specified
 const NO_COMMAND_SPECIFIED = program.args.length === 0;
 if (NO_COMMAND_SPECIFIED) {
-  console.log("\n\n");
   console.log("---------------------------------------------------------".yellow.bold);
   console.log(`\n                   PUPPETEER SALVATOR\n`.green.bold);
   console.log("---------------------------------------------------------".yellow.bold);
