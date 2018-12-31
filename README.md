@@ -8,10 +8,8 @@ message.
 
 It also sends the user an email notification with the list of birthdays and their profile link.
 
-![puppeteer-salvator cli in action!!](screenshots/main.jpg)
+![puppeteer-salvator cli in action!!](screenshots/home.png)
 
-
-![puppeteer-salvator cli in action!!](screenshots/Screenshot&#32;from&#32;2018-12-21&#32;21-08-43.jpeg)
 
 ## How does it work?
 Puppeteer uses a headless browser to navigate to `facebook.com/login` and using the credentials from the `.env` file,
@@ -34,6 +32,13 @@ Salvator can be installed using npm or source.
     3. [Install npm](https://www.npmjs.com/get-npm)
     4. `npm install` (this step installs all the dependencies)
     5. `npm link` - to link the CLI tool so that it can be used globally in your system.
+
+## Using CLI tool locally
+Follow the steps given below in order to run the **puppeteer-salvator** tool globally in your terminal:
+
+1. Go to the project folder and run `npm link` in your terminal. Creates a *symlink* in the global folder `{prefix}/lib/node_modules/<package>` to your project.
+2. Open a new terminal and run `puppeteer-salvator` from anywhere(not necessarily the project folder).
+3. In-case you are done testing and want to remove the *symlink* from the global folder, run `npm unlink`.
 
 **NOTE: In case of any errors related to launching headless chrome, [install google-chrome-stable](https://www.linuxbabe.com/ubuntu/install-google-chrome-ubuntu-16-04-lts).
  It'll resolve all the dependency issues.**
