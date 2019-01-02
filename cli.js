@@ -80,11 +80,12 @@ program
         enabled: ctx => ctx.env,
         task: async () => {
           try {
-            const stream = execa("node", [PATH_TO_INDEX]).stdout;
+            // const stream = execa("node", [PATH_TO_INDEX]).stdout;
+            child_process.execFileSync(PATH_TO_INDEX, { stdio: 'inherit' });
             /* child.stdout.on('data', (data) => {
               process.stdout(data);
             }); */
-            stream.pipe(process.stdout);
+            // stream.pipe(process.stdout);
           } catch (e) {
             process.stdout.write(`${logSymbols.error} ${e.message.red} \n`);
           }
