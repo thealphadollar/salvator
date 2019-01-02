@@ -8,7 +8,7 @@ message.
 
 It also sends the user an email notification with the list of birthdays and their profile link.
 
-![puppeteer-salvator cli in action!!](screenshots/home.png)
+![puppeteer-salvator cli in action!!](screenshots/salvator.gif)
 
 
 ## How does it work?
