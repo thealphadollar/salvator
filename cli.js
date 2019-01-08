@@ -29,6 +29,7 @@ program
 program
   .command("run")
   .description("Run the automated Birthday wish script".blue)
+  .option('-w, --watch', 'Show in a browser')
   .action(puppeteer_run);
 
 program
@@ -38,6 +39,7 @@ program
 
 program
   .command("bth")
+  .option('-w, --watch', 'Show in a browser')
   .description("Show all the birthdays for the current day".blue)
   .action(puppeteer_bth);
 
@@ -57,5 +59,17 @@ if (NO_COMMAND_SPECIFIED) {
   console.log("---------------------------------------------------------".yellow.bold);
   console.log(`\n                   PUPPETEER SALVATOR\n`.green.bold);
   console.log("---------------------------------------------------------".yellow.bold);
-  program.help();
+  program.outputHelp();
+  console.log();
+  console.log('Commands with options:');
+  console.log('  env'.blue.bold);
+  console.log('    -h --help \t Show help for this command'.green);
+  console.log('  cron'.blue.bold);
+  console.log('    -h --help \t Show help for this command'.green);
+  console.log('  run'.blue.bold);
+  console.log('    -h --help \t Show help for this command'.green);
+  console.log('    -w --watch \t Show in a browser'.green);
+  console.log('  bth'.blue.bold);
+  console.log('    -h --help \t Show help for this command'.green);
+  console.log('    -w --watch \t Show in a browser'.green);
 }
