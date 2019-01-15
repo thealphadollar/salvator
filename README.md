@@ -22,9 +22,14 @@ To avoid sending multiple wishes, the program creates a json file with a timesta
 ## Install
 Salvator can be installed using npm or source.
 
+ **NOTE: puppeteer-salvator installs Chromium(102 MB) along with it. If you have already Chromium installed, use the `--ignore-scripts` option.**
+
 * ### Install using npm
     1. [Install npm](https://www.npmjs.com/get-npm)
     2. `npm install -g puppeteer-salvator`
+    <br />
+    ***OR***
+    <br/>`npm install -g puppeteer-salvator --ignore-scripts` *(without Chromium)*
 
 * ### Build using source (**RECOMMENDED**)
     1. `git clone https://www.github.com/thealphadollar/salvator`
